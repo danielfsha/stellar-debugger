@@ -1,13 +1,10 @@
-import { createStore, Store, Vector } from "vectra";
+import { LocalIndex, IndexItem, QueryResult } from "vectra";
 
 export class VectorStore {
-  private store: Store;
+  private index: LocalIndex;
 
   constructor(path: string = ".vectorstore") {
-    this.store = createStore({
-      path,
-      dimensions: 1536, // default for OpenAI embeddings, make configurable
-    });
+    this.index = new LocalIndex(path);
   }
 
   async addVector(
@@ -15,18 +12,19 @@ export class VectorStore {
     vector: number[],
     metadata: Record<string, any> = {},
   ) {
-    await this.store.add({ id, values: vector, metadata });
+    await this.index.upsertItem({ id, vector, metadata });
   }
 
-  async query(vector: number[], topK: number = 5): Promise<Vector[]> {
-    return this.store.query({ values: vector, topK });
+  async query(vector: number[], topK: number = 5): Promise<QueryResult[]> {
+    // vectra requires a query string, but we can pass an empty string for pure vector search
+    return this.index.queryItems(vector, "", topK);
   }
 
-  async get(id: string): Promise<Vector | undefined> {
-    return this.store.get(id);
+  async get(id: string): Promise<IndexItem | undefined> {
+    return this.index.getItem(id);
   }
 
   async delete(id: string): Promise<void> {
-    await this.store.delete(id);
+    await this.index.deleteItem(id);
   }
 }

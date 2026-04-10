@@ -10,9 +10,7 @@ export class EmbeddingService {
 
   async embed(text: string): Promise<number[]> {
     const { embedding } = await embed({
-      model: mistral.embedding("mistral-embed", {
-        apiKey: this.apiKey,
-      }),
+      model: mistral.embedding("mistral-embed"),
       value: text,
     });
     return embedding;
