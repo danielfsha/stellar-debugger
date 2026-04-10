@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { registerSorobanTestCommand } from "./registerSorobanTestCommand";
+// Removed: import { registerSorobanTestCommand } from "./registerSorobanTestCommand";
 import { TestCodeLensProvider } from "./editor/codeLensProvider";
 import { AIInsightsPanel } from "./ui/aiInsightsPanel";
 import { CoverageHeatmap } from "./ui/coverageHeatmap";
@@ -171,8 +171,8 @@ import { getAllFilesAndFolders } from "./utils/fileUtils";
 }
 // Modular command loader for future extensibility
 function registerAllCommands(context: vscode.ExtensionContext) {
-  // Register Soroban test command (add more commands here as needed)
-  registerSorobanTestCommand(context);
+  // No Soroban test command needed
+}
 }
 
 // This method is called when your extension is deactivated

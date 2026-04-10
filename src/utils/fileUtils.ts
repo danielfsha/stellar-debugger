@@ -16,7 +16,10 @@ export async function getAllFilesAndFolders(): Promise<string[]> {
     "**/Thumbs.db",
     "**/.*", // hidden files/folders
   ];
-  const files = await vscode.workspace.findFiles("**/*", `{${exclude.join(",")}}`);
+  const files = await vscode.workspace.findFiles(
+    "**/*",
+    `{${exclude.join(",")}}`,
+  );
   // Normalize paths for platform-agnostic output
-  return files.map(f => path.normalize(f.fsPath));
+  return files.map((f) => path.normalize(f.fsPath));
 }
