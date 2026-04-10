@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const FormalVerificationModule: TestingModule = {
-  name: 'FormalVerification',
+  name: "FormalVerification",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement formal verification hooks

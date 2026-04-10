@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const TestDataManagementModule: TestingModule = {
-  name: 'TestDataManagement',
+  name: "TestDataManagement",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement real + synthetic test data management

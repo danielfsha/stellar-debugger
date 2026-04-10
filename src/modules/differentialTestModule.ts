@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const DifferentialTestModule: TestingModule = {
-  name: 'DifferentialTest',
+  name: "DifferentialTest",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement differential test generation

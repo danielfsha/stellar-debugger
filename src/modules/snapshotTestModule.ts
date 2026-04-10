@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const SnapshotTestModule: TestingModule = {
-  name: 'SnapshotTest',
+  name: "SnapshotTest",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement snapshot test generation

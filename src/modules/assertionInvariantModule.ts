@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const AssertionInvariantModule: TestingModule = {
-  name: 'AssertionInvariant',
+  name: "AssertionInvariant",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement assertion/invariant test generation

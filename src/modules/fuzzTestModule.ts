@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const FuzzTestModule: TestingModule = {
-  name: 'FuzzTest',
+  name: "FuzzTest",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement fuzz test generation

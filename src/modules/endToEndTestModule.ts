@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const EndToEndTestModule: TestingModule = {
-  name: 'EndToEndTest',
+  name: "EndToEndTest",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement E2E test generation

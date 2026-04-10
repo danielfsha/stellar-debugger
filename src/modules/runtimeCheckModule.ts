@@ -1,7 +1,7 @@
-import { TestingModule } from '../types/testingModule';
+import { TestingModule } from "../types/testingModule";
 
 export const RuntimeCheckModule: TestingModule = {
-  name: 'RuntimeCheck',
+  name: "RuntimeCheck",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement runtime check test generation

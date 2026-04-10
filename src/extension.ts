@@ -7,6 +7,15 @@ import { AIInsightsPanel } from "./ui/aiInsightsPanel";
 import { CoverageHeatmap } from "./ui/coverageHeatmap";
 import { UnitTestModule } from "./modules/unitTestModule";
 import { PropertyTestModule } from "./modules/propertyTestModule";
+import { EndToEndTestModule } from './modules/endToEndTestModule';
+import { FuzzTestModule } from './modules/fuzzTestModule';
+import { SnapshotTestModule } from './modules/snapshotTestModule';
+import { AssertionInvariantModule } from './modules/assertionInvariantModule';
+import { RuntimeCheckModule } from './modules/runtimeCheckModule';
+import { DifferentialTestModule } from './modules/differentialTestModule';
+import { FormalVerificationModule } from './modules/formalVerificationModule';
+import { TestDataManagementModule } from './modules/testDataManagementModule';
+import { MockIsolationModule } from './modules/mockIsolationModule';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -27,40 +36,35 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  // Register test-related commands
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "extension.generateTests",
-      async (fileName: string) => {
-        vscode.window.showInformationMessage(
-          "Generate Tests command triggered for " + fileName,
-        );
-        // TODO: Load file, call UnitTestModule.generateTests, show results
-      },
-    ),
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "extension.improveTests",
-      async (fileName: string) => {
-        vscode.window.showInformationMessage(
-          "Improve Tests command triggered for " + fileName,
-        );
-        // TODO: Load file, call UnitTestModule.improveTests, show results
-      },
-    ),
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "extension.fixFailures",
-      async (fileName: string) => {
-        vscode.window.showInformationMessage(
-          "Fix Failures command triggered for " + fileName,
-        );
-        // TODO: Load file, call UnitTestModule.fixFailures, show results
-      },
-    ),
-  );
+
+  // Register test-related commands for all modules
+  const modules = [
+    { name: 'Unit', mod: UnitTestModule },
+    { name: 'Property', mod: PropertyTestModule },
+    { name: 'EndToEnd', mod: EndToEndTestModule },
+    { name: 'Fuzz', mod: FuzzTestModule },
+    { name: 'Snapshot', mod: SnapshotTestModule },
+    { name: 'AssertionInvariant', mod: AssertionInvariantModule },
+    { name: 'RuntimeCheck', mod: RuntimeCheckModule },
+    { name: 'Differential', mod: DifferentialTestModule },
+    { name: 'FormalVerification', mod: FormalVerificationModule },
+    { name: 'TestDataManagement', mod: TestDataManagementModule },
+    { name: 'MockIsolation', mod: MockIsolationModule },
+  ];
+  for (const { name, mod } of modules) {
+    context.subscriptions.push(
+      vscode.commands.registerCommand(`extension.generate${name}Tests`, async (fileName: string) => {
+        vscode.window.showInformationMessage(`Generate ${name} Tests command triggered for ${fileName}`);
+        // TODO: Load file, call mod.generateTests, show results
+      })
+    );
+    context.subscriptions.push(
+      vscode.commands.registerCommand(`extension.run${name}Tests`, async (fileName: string) => {
+        vscode.window.showInformationMessage(`Run ${name} Tests command triggered for ${fileName}`);
+        // TODO: Load file, call mod.runTests, show results
+      })
+    );
+  }
 
   // Register panels and heatmap (to be used in command handlers)
   const aiPanel = new AIInsightsPanel();
