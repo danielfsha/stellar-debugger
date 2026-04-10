@@ -4,28 +4,12 @@
   "description": "",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.115.0"
+    "vscode": "^1.107.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:stellar-debugger.runSorobanTests",
-    "onCommand:stellar-debugger.runSorobanTestsCmd",
-    "onCommand:extension.runUnitTests",
-    "onCommand:extension.runPropertyTests",
-    "onCommand:extension.runEndToEndTests",
-    "onCommand:extension.runFuzzTests",
-    "onCommand:extension.runSnapshotTests",
-    "onCommand:extension.runAssertionInvariantTests",
-    "onCommand:extension.runRuntimeCheckTests",
-    "onCommand:extension.runDifferentialTests",
-    "onCommand:extension.runFormalVerificationTests",
-    "onCommand:extension.runTestDataManagementTests",
-    "onCommand:extension.runMockIsolationTests",
-    "onCommand:extension.runAllTests",
-    "onCommand:extension.runTestOptions"
-  ],
+
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -116,7 +100,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "@types/node-fetch": "^2.6.13",
-    "@types/vscode": "^1.115.0",
+    "@types/vscode": "^1.107.0",
     "@types/whatwg-fetch": "^0.0.33",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
