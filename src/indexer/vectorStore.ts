@@ -65,7 +65,7 @@ export class VectorStore {
     if (!item) return undefined;
     return {
       id,
-      vector: item.values,
+      vector: item.values ?? [],
       metadata: item.metadata || {},
     };
   }
