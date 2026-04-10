@@ -3,6 +3,7 @@ import * as cp from 'child_process';
 import { promisify } from 'util';
 import { AIService } from './aiService';
 import { PineconeService } from './pineconeService';
+import { StatusBarManager } from '../ui/statusBar';
 
 const exec = promisify(cp.exec);
 
@@ -23,6 +24,7 @@ export class TestRunner {
     this.aiService = AIService.getInstance();
     this.pineconeService = PineconeService.getInstance();
     this.outputChannel = vscode.window.createOutputChannel('Stellar Debugger');
+    StatusBarManager.getInstance();
   }
 
   static getInstance(): TestRunner {
@@ -34,6 +36,9 @@ export class TestRunner {
 
   async runSorobanTest(testFile: string): Promise<TestExecutionResult> {
     const startTime = Date.now();
+    const statusBar = StatusBarManager.getInstance();
+    statusBar.updateStatus('running');
+    
     this.outputChannel.show();
     this.outputChannel.appendLine(`\n=== Running Soroban Test: ${testFile} ===\n`);
 
@@ -54,6 +59,7 @@ export class TestRunner {
       this.outputChannel.appendLine(output);
       this.outputChannel.appendLine(`\n✓ Test completed in ${duration}ms\n`);
 
+      statusBar.updateStatus('success', `Tests passed in ${duration}ms`);
       await this.indexTestResult(testFile, 'soroban', true, output);
 
       return {
@@ -68,6 +74,7 @@ export class TestRunner {
       this.outputChannel.appendLine(errorOutput);
       this.outputChannel.appendLine(`\n✗ Test failed in ${duration}ms\n`);
 
+      statusBar.updateStatus('error', error.message);
       await this.indexTestResult(testFile, 'soroban', false, errorOutput, error.message);
 
       return {
