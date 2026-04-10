@@ -9,13 +9,15 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:stellar-debugger.runSorobanTests"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "stellar-debugger.helloWorld",
-        "title": "Hello World"
+        "command": "stellar-debugger.runSorobanTests",
+        "title": "Run Soroban Tests"
       }
     ]
   },
