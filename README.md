@@ -1,71 +1,108 @@
-# stellar-debugger README
+# Stellar Debugger - AI-Powered Soroban Test Extension
 
-This is the README for your extension "stellar-debugger". After writing up a brief description, we recommend including the following sections.
+A modular VS Code extension for running and debugging Stellar/Soroban smart contract tests with AI-powered error fixing.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- 🚀 Run Soroban tests directly from VS Code
+- 🤖 AI-powered error analysis and automatic fix suggestions
+- 📊 Test result indexing with Pinecone for historical analysis
+- 🔍 CodeLens integration for quick test actions
+- 📈 Test history tracking and visualization
+- 🎯 Support for multiple test types (Unit, Property, Fuzz, E2E, etc.)
 
-For example if there is an image subfolder under your extension project workspace:
+## Setup
 
-\!\[feature X\]\(images/feature-x.png\)
+### Prerequisites
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Rust and Cargo installed
+2. Stellar/Soroban CLI tools
+3. Node.js 16+ and pnpm
 
-## Requirements
+### Installation
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1. Clone and install dependencies:
+```bash
+pnpm install
+```
 
-## Extension Settings
+2. Configure API keys in VS Code settings:
+   - Open Settings (Ctrl+,)
+   - Search for "Stellar Debugger"
+   - Add your API keys:
+     - OpenAI API Key (or Mistral API Key)
+     - Pinecone API Key
+     - Pinecone Environment
+     - Pinecone Index name
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+3. Compile the extension:
+```bash
+pnpm run compile
+```
 
-For example:
+4. Press F5 to launch the extension in debug mode
 
-This extension contributes the following settings:
+## Usage
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### Quick Start
 
-## Known Issues
+1. Open a Rust file with Soroban tests
+2. Use CodeLens actions at the top of the file:
+   - **▶ Run Tests** - Execute tests normally
+   - **🤖 Run with AI Fix** - Run tests and get AI-powered fix suggestions
+   - **📊 View History** - See past test results
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### Command Palette
 
-## Release Notes
+Press `Ctrl+Shift+P` and search for:
+- `Stellar: Run Soroban Tests`
+- `Stellar: Run Tests with AI Fix`
+- `Stellar: View Test History`
+- `Stellar: Configure Extension`
 
-Users appreciate release notes as you update your extension.
+## Configuration
 
-### 1.0.0
+Add to your VS Code `settings.json`:
 
-Initial release of ...
+```json
+{
+  "stellarDebugger.openaiApiKey": "sk-...",
+  "stellarDebugger.pineconeApiKey": "...",
+  "stellarDebugger.pineconeEnvironment": "us-east-1-aws",
+  "stellarDebugger.pineconeIndex": "stellar-tests",
+  "stellarDebugger.vercelAiModel": "gpt-4"
+}
+```
 
-### 1.0.1
+## Architecture
 
-Fixed issue #.
+```
+src/
+├── commands/          # Command handlers
+├── config/            # Configuration management
+├── services/          # Core services (AI, Pinecone, TestRunner)
+├── modules/           # Test type modules
+├── editor/            # CodeLens and editor integrations
+└── ui/                # UI components
+```
 
-### 1.1.0
+## Development
 
-Added features X, Y, and Z.
+```bash
+# Watch mode
+pnpm run watch
 
----
+# Lint
+pnpm run lint
 
-## Following extension guidelines
+# Test
+pnpm run test
+```
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Contributing
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+This extension follows conventional commits. Make frequent, small commits during development.
 
-## Working with Markdown
+## License
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+MIT
