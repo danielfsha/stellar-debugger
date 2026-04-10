@@ -33,6 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerCodeLensProvider(
       { scheme: "file", language: "typescript" },
       new TestCodeLensProvider(),
+import { getAllFilesAndFolders } from "./utils/fileUtils";
     ),
   );
 
@@ -122,19 +123,16 @@ export function activate(context: vscode.ExtensionContext) {
               `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${fileList}`,
             );
             // TODO: Loop through files, call mod.generateTests for each, show results
-            return;
-          }
-          vscode.window.showInformationMessage(
-            `Generate ${name} Tests command triggered for ${resolvedFileName}`,
+            const files = await getAllFilesAndFolders();
           );
           // TODO: Load file, call mod.generateTests, show results
         },
       ),
     );
     context.subscriptions.push(
-      vscode.commands.registerCommand(
-        `extension.run${name}Tests`,
-        async (fileName?: string) => {
+            vscode.window.showInformationMessage(
+              `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
+            );
           let resolvedFileName =
             fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
@@ -153,19 +151,16 @@ export function activate(context: vscode.ExtensionContext) {
               .map((f) => f.fsPath.replace(vscode.workspace.rootPath || "", ""))
               .join("\n");
             vscode.window.showInformationMessage(
-              `Run ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${fileList}`,
-            );
-            // TODO: Loop through files, call mod.runTests for each, show results
-            return;
+            const files = await getAllFilesAndFolders();
           }
           vscode.window.showInformationMessage(
             `Run ${name} Tests command triggered for ${resolvedFileName}`,
           );
           // TODO: Load file, call mod.runTests, show results
         },
-      ),
-    );
-  }
+            vscode.window.showInformationMessage(
+              `Run ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
+            );
 
   // Register panels and heatmap (to be used in command handlers)
   const aiPanel = new AIInsightsPanel();
