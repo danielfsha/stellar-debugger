@@ -104,9 +104,24 @@ export function activate(context: vscode.ExtensionContext) {
           let resolvedFileName =
             fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            vscode.window.showWarningMessage(
-              `No file selected or open. Please open a file to generate ${name} tests.`,
+            // Recursively get all files and folders in the workspace
+            const files = await vscode.workspace.findFiles(
+              "**/*",
+              "**/node_modules/**",
             );
+            if (files.length === 0) {
+              vscode.window.showWarningMessage(
+                `No files or folders found in workspace to generate ${name} tests.`,
+              );
+              return;
+            }
+            const fileList = files
+              .map((f) => f.fsPath.replace(vscode.workspace.rootPath || "", ""))
+              .join("\n");
+            vscode.window.showInformationMessage(
+              `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${fileList}`,
+            );
+            // TODO: Loop through files, call mod.generateTests for each, show results
             return;
           }
           vscode.window.showInformationMessage(
@@ -123,9 +138,24 @@ export function activate(context: vscode.ExtensionContext) {
           let resolvedFileName =
             fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            vscode.window.showWarningMessage(
-              `No file selected or open. Please open a file to run ${name} tests.`,
+            // Recursively get all files and folders in the workspace
+            const files = await vscode.workspace.findFiles(
+              "**/*",
+              "**/node_modules/**",
             );
+            if (files.length === 0) {
+              vscode.window.showWarningMessage(
+                `No files or folders found in workspace to run ${name} tests.`,
+              );
+              return;
+            }
+            const fileList = files
+              .map((f) => f.fsPath.replace(vscode.workspace.rootPath || "", ""))
+              .join("\n");
+            vscode.window.showInformationMessage(
+              `Run ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${fileList}`,
+            );
+            // TODO: Loop through files, call mod.runTests for each, show results
             return;
           }
           vscode.window.showInformationMessage(
