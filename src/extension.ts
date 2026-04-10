@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+import { TestCommands } from "./commands/testCommands";
 import { getAllFilesAndFolders } from "./utils/fileUtils";
 import { TestCodeLensProvider } from "./editor/codeLensProvider";
 import { AIInsightsPanel } from "./ui/aiInsightsPanel";
@@ -19,11 +20,16 @@ import { MockIsolationModule } from "./modules/mockIsolationModule";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // Show activation message
   vscode.window.showInformationMessage(
-    'Congratulations, your extension "stellar-debugger" is now active!',
+    'Stellar Debugger activated! Use "Stellar: Run Tests with AI Fix" to get started.',
   );
+
+  // Initialize and register test commands
+  const testCommands = new TestCommands();
+  await testCommands.initialize();
+  testCommands.registerCommands(context);
 
   // Register all modular commands here for scalability
   registerAllCommands(context);
@@ -31,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Register CodeLens for test actions
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
-      { scheme: "file", language: "typescript" },
+      { scheme: "file", language: "rust" },
       new TestCodeLensProvider(),
     ),
   );
