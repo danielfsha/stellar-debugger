@@ -30,7 +30,7 @@ pnpm install
    - Open Settings (Ctrl+,)
    - Search for "Stellar Debugger"
    - Add your API keys:
-     - OpenAI API Key (or Mistral API Key)
+     - Mistral API Key
      - Pinecone API Key
      - Pinecone Environment
      - Pinecone Index name
@@ -66,11 +66,10 @@ Add to your VS Code `settings.json`:
 
 ```json
 {
-  "stellarDebugger.openaiApiKey": "sk-...",
+  "stellarDebugger.mistralApiKey": "your-mistral-key",
   "stellarDebugger.pineconeApiKey": "...",
   "stellarDebugger.pineconeEnvironment": "us-east-1-aws",
-  "stellarDebugger.pineconeIndex": "stellar-tests",
-  "stellarDebugger.vercelAiModel": "gpt-4"
+  "stellarDebugger.pineconeIndex": "stellar-tests"
 }
 ```
 
