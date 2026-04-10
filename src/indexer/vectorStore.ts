@@ -32,13 +32,15 @@ export class VectorStore {
     metadata: Record<string, any> = {},
   ) {
     const index = await this.getIndex();
-    await index.upsert([
-      {
-        id,
-        values: vector,
-        metadata,
-      },
-    ]);
+    await index.upsert({
+      records: [
+        {
+          id,
+          values: vector,
+          metadata,
+        },
+      ],
+    });
   }
 
   async query(vector: number[], topK: number = 5): Promise<VectorEntry[]> {
@@ -58,8 +60,8 @@ export class VectorStore {
 
   async get(id: string): Promise<VectorEntry | undefined> {
     const index = await this.getIndex();
-    const results = await index.fetch([id]);
-    const item = results.vectors?.[id];
+    const results = await index.fetch({ ids: [id] });
+    const item = results.records?.[id];
     if (!item) return undefined;
     return {
       id,
@@ -70,6 +72,6 @@ export class VectorStore {
 
   async delete(id: string): Promise<void> {
     const index = await this.getIndex();
-    await index.delete1([id]);
+    await index.deleteMany({ ids: [id] });
   }
 }
