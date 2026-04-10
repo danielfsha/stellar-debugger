@@ -46,7 +46,7 @@ export function registerSorobanTestCommand(context: vscode.ExtensionContext) {
             exec(
               "soroban test",
               { cwd: targetPath },
-              (error, stdout, stderr) => {
+                  (error: Error | null, stdout: string, stderr: string) => {
                 if (error) {
                   vscode.window.showErrorMessage(
                     `Test run failed: ${stderr || error.message}`,
