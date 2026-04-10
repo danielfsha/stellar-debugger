@@ -5,6 +5,7 @@ import { FixEngine } from "../ai/fixEngine";
 
 export const UnitTestModule: TestingModule = {
   name: "UnitTest",
+  description: "Run all unit tests in the project. Configuration: Set your model and API keys in the .env file.",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     const generator = new TestGenerator(context.ai);

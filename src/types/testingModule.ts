@@ -1,5 +1,6 @@
 export interface TestingModule {
   name: string;
+  description?: string;
   activate(context: any): void;
   generateTests(file: any, context: any): Promise<any[]>;
   runTests(target: any): Promise<any[]>;
