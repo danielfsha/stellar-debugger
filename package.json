@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:stellar-debugger.runSorobanTests"
+    "onCommand:stellar-debugger.runSorobanTests",
+    "onCommand:stellar-debugger.runSorobanTestsCmd"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,6 +19,10 @@
       {
         "command": "stellar-debugger.runSorobanTests",
         "title": "Run Soroban Tests"
+      },
+      {
+        "command": "stellar-debugger.runSorobanTestsCmd",
+        "title": "Run Soroban Tests (Command Line)"
       }
     ]
   },

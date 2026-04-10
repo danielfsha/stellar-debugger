@@ -2,21 +2,20 @@ import * as vscode from "vscode";
 import { UnitTestAdapter } from "./adapters/unitTestAdapter";
 import { SorobanTestResult } from "./adapters/adapterTypes";
 
+import { exec } from "child_process";
+
 export function registerSorobanTestCommand(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     "stellar-debugger.runSorobanTests",
     async () => {
-      // For now, just use the UnitTestAdapter
-      const adapter = new UnitTestAdapter();
-      // TODO: Let user pick target path; for now, use workspace root
       const folders = vscode.workspace.workspaceFolders;
       if (!folders || folders.length === 0) {
         vscode.window.showErrorMessage("No workspace folder found.");
         return;
       }
       const targetPath = folders[0].uri.fsPath;
+      const adapter = new UnitTestAdapter();
       const results: SorobanTestResult[] = await adapter.runTests(targetPath);
-      // Show results in a simple info message for now
       const summary = results
         .map((r) => `${r.passed ? "✅" : "❌"} ${r.name}: ${r.message || ""}`)
         .join("\n");
@@ -26,5 +25,46 @@ export function registerSorobanTestCommand(context: vscode.ExtensionContext) {
       );
     },
   );
-  context.subscriptions.push(disposable);
+
+  const disposableCmd = vscode.commands.registerCommand(
+    "stellar-debugger.runSorobanTestsCmd",
+    async () => {
+      const folders = vscode.workspace.workspaceFolders;
+      if (!folders || folders.length === 0) {
+        vscode.window.showErrorMessage("No workspace folder found.");
+        return;
+      }
+      const targetPath = folders[0].uri.fsPath;
+      vscode.window.withProgress(
+        {
+          location: vscode.ProgressLocation.Notification,
+          title: "Running Soroban tests via command line...",
+          cancellable: false,
+        },
+        async () => {
+          return new Promise<void>((resolve) => {
+            exec(
+              "soroban test",
+              { cwd: targetPath },
+              (error, stdout, stderr) => {
+                if (error) {
+                  vscode.window.showErrorMessage(
+                    `Test run failed: ${stderr || error.message}`,
+                  );
+                  resolve();
+                  return;
+                }
+                vscode.window.showInformationMessage(
+                  `Soroban Test Results (cmd):\n${stdout}`,
+                );
+                resolve();
+              },
+            );
+          });
+        },
+      );
+    },
+  );
+
+  context.subscriptions.push(disposable, disposableCmd);
 }
