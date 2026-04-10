@@ -38,11 +38,76 @@ export class PineconeService {
       });
 
       this.indexName = config.pineconeIndex;
+      
+      // Check if index exists, create if not
+      await this.ensureIndexExists();
+      
       return true;
     } catch (error) {
       console.error('Failed to initialize Pinecone:', error);
       return false;
     }
+  }
+
+  private async ensureIndexExists(): Promise<void> {
+    if (!this.client) {
+      throw new Error('Pinecone client not initialized');
+    }
+
+    try {
+      // List existing indexes
+      const indexes = await this.client.listIndexes();
+      const indexExists = indexes.indexes?.some(idx => idx.name === this.indexName);
+
+      if (!indexExists) {
+        console.log(`Creating Pinecone index: ${this.indexName}`);
+        
+        // Create index with appropriate dimensions for embeddings
+        await this.client.createIndex({
+          name: this.indexName,
+          dimension: 1536, // Standard embedding dimension
+          metric: 'cosine',
+          spec: {
+            serverless: {
+              cloud: 'aws',
+              region: 'us-east-1'
+            }
+          }
+        });
+
+        // Wait for index to be ready
+        console.log('Waiting for index to be ready...');
+        await this.waitForIndexReady();
+        console.log(`Index ${this.indexName} created successfully`);
+      } else {
+        console.log(`Index ${this.indexName} already exists`);
+      }
+    } catch (error) {
+      console.error('Error ensuring index exists:', error);
+      throw error;
+    }
+  }
+
+  private async waitForIndexReady(maxAttempts: number = 30): Promise<void> {
+    if (!this.client) {
+      throw new Error('Pinecone client not initialized');
+    }
+
+    for (let i = 0; i < maxAttempts; i++) {
+      try {
+        const indexDescription = await this.client.describeIndex(this.indexName);
+        if (indexDescription.status?.ready) {
+          return;
+        }
+      } catch (error) {
+        // Index might not be queryable yet
+      }
+      
+      // Wait 2 seconds before next attempt
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    
+    throw new Error('Index creation timeout');
   }
 
   async indexTestResult(result: TestResult, embedding: number[]): Promise<void> {
