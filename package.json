@@ -50,8 +50,8 @@
   },
   "dependencies": {
     "@ai-sdk/mistral": "^3.0.30",
+    "@huggingface/transformers": "^4.0.1",
     "ai": "^6.0.156",
-    "openai": "^6.34.0",
-    "vectra": "^0.14.0"
+    "openai": "^6.34.0"
   }
 }
