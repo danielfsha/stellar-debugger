@@ -52,18 +52,20 @@ export class PineconeService {
 
     const index = this.client.index(this.indexName);
     
-    await index.upsert([{
-      id: result.id,
-      values: embedding,
-      metadata: {
-        testType: result.testType,
-        fileName: result.fileName,
-        timestamp: result.timestamp,
-        passed: result.passed,
-        error: result.error || '',
-        ...result.metadata
-      }
-    }]);
+    await index.upsert({
+      records: [{
+        id: result.id,
+        values: embedding,
+        metadata: {
+          testType: result.testType,
+          fileName: result.fileName,
+          timestamp: result.timestamp,
+          passed: result.passed,
+          error: result.error || '',
+          ...result.metadata
+        }
+      }]
+    });
   }
 
   async querySimilarTests(embedding: number[], topK: number = 5): Promise<any[]> {
