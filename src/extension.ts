@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-// Removed: import { registerSorobanTestCommand } from "./registerSorobanTestCommand";
+import { getAllFilesAndFolders } from "./utils/fileUtils";
 import { TestCodeLensProvider } from "./editor/codeLensProvider";
 import { AIInsightsPanel } from "./ui/aiInsightsPanel";
 import { CoverageHeatmap } from "./ui/coverageHeatmap";
@@ -33,7 +33,6 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerCodeLensProvider(
       { scheme: "file", language: "typescript" },
       new TestCodeLensProvider(),
-import { getAllFilesAndFolders } from "./utils/fileUtils";
     ),
   );
 
@@ -105,74 +104,65 @@ import { getAllFilesAndFolders } from "./utils/fileUtils";
           let resolvedFileName =
             fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            // Recursively get all files and folders in the workspace
-            const files = await vscode.workspace.findFiles(
-              "**/*",
-              "**/node_modules/**",
-            );
+            const files = await getAllFilesAndFolders();
             if (files.length === 0) {
               vscode.window.showWarningMessage(
                 `No files or folders found in workspace to generate ${name} tests.`,
               );
               return;
             }
-            const fileList = files
-              .map((f) => f.fsPath.replace(vscode.workspace.rootPath || "", ""))
-              .join("\n");
             vscode.window.showInformationMessage(
-              `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${fileList}`,
+              `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
             );
             // TODO: Loop through files, call mod.generateTests for each, show results
-            const files = await getAllFilesAndFolders();
+            return;
+          }
+          vscode.window.showInformationMessage(
+            `Generate ${name} Tests command triggered for ${resolvedFileName}`,
           );
           // TODO: Load file, call mod.generateTests, show results
         },
       ),
     );
     context.subscriptions.push(
-            vscode.window.showInformationMessage(
-              `Generate ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
-            );
+      vscode.commands.registerCommand(
+        `extension.run${name}Tests`,
+        async (fileName?: string) => {
           let resolvedFileName =
             fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            // Recursively get all files and folders in the workspace
-            const files = await vscode.workspace.findFiles(
-              "**/*",
-              "**/node_modules/**",
-            );
+            const files = await getAllFilesAndFolders();
             if (files.length === 0) {
               vscode.window.showWarningMessage(
                 `No files or folders found in workspace to run ${name} tests.`,
               );
               return;
             }
-            const fileList = files
-              .map((f) => f.fsPath.replace(vscode.workspace.rootPath || "", ""))
-              .join("\n");
             vscode.window.showInformationMessage(
-            const files = await getAllFilesAndFolders();
+              `Run ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
+            );
+            // TODO: Loop through files, call mod.runTests for each, show results
+            return;
           }
           vscode.window.showInformationMessage(
             `Run ${name} Tests command triggered for ${resolvedFileName}`,
           );
           // TODO: Load file, call mod.runTests, show results
         },
-            vscode.window.showInformationMessage(
-              `Run ${name} Tests command triggered for all files/folders in workspace (${files.length} items):\n${files.join("\n")}`,
-            );
+      ),
+    );
 
-  // Register panels and heatmap (to be used in command handlers)
-  const aiPanel = new AIInsightsPanel();
-  const heatmap = new CoverageHeatmap();
-  // Example usage:
-  // aiPanel.show({ why: 'Test failed', suggestion: 'Fix assertion' });
-  // heatmap.showCoverage([new vscode.Range(0, 0, 0, 10)]);
-}
-// Modular command loader for future extensibility
-function registerAllCommands(context: vscode.ExtensionContext) {
-  // No Soroban test command needed
-}
+    // Register panels and heatmap (to be used in command handlers)
+    const aiPanel = new AIInsightsPanel();
+    const heatmap = new CoverageHeatmap();
+    // Example usage:
+    // aiPanel.show({ why: 'Test failed', suggestion: 'Fix assertion' });
+    // heatmap.showCoverage([new vscode.Range(0, 0, 0, 10)]);
+  }
+  // Modular command loader for future extensibility
+  function registerAllCommands(context: vscode.ExtensionContext) {
+    // No Soroban test command needed
+  }
 }
 
 // This method is called when your extension is deactivated
