@@ -1,31 +1,3 @@
-// Register a top-level command for test options (unit, all, etc.)
-context.subscriptions.push(
-  vscode.commands.registerCommand("extension.runTestOptions", async () => {
-    const options = [
-      { label: "Run Unit Tests", command: "extension.runUnitTests" },
-      { label: "Run All Tests", command: "extension.runAllTests" },
-    ];
-    const selection = await vscode.window.showQuickPick(options, {
-      placeHolder: "Select a test option",
-    });
-    if (selection) {
-      if (selection.command === "extension.runAllTests") {
-        // Run all test modules
-        for (const { name } of modules) {
-          await vscode.commands.executeCommand(
-            `extension.run${name}Tests`,
-            vscode.window.activeTextEditor?.document.fileName,
-          );
-        }
-      } else {
-        await vscode.commands.executeCommand(
-          selection.command,
-          vscode.window.activeTextEditor?.document.fileName,
-        );
-      }
-    }
-  }),
-);
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
@@ -65,7 +37,12 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // Register test-related commands for all modules
-  const modules = [
+  // Define a type for test modules to allow optional description
+  type TestingModule = {
+    description?: string;
+    [key: string]: any;
+  };
+  const modules: { name: string; mod: TestingModule }[] = [
     { name: "Unit", mod: UnitTestModule },
     { name: "Property", mod: PropertyTestModule },
     { name: "EndToEnd", mod: EndToEndTestModule },
@@ -78,6 +55,47 @@ export function activate(context: vscode.ExtensionContext) {
     { name: "TestDataManagement", mod: TestDataManagementModule },
     { name: "MockIsolation", mod: MockIsolationModule },
   ];
+
+  // Register a top-level command for test options (all test modules, with label and description)
+  context.subscriptions.push(
+    vscode.commands.registerCommand("extension.runTestOptions", async () => {
+      const options = [
+        ...modules.map(({ name, mod }) => ({
+          label: `${name.replace(/([A-Z])/g, " $1").trim()} Tests`,
+          description:
+            typeof mod === "object" &&
+            "description" in mod &&
+            typeof mod.description === "string"
+              ? mod.description
+              : `Run ${name} tests`,
+          command: `extension.run${name}Tests`,
+        })),
+        {
+          label: "All Tests",
+          description: "Run all available test modules",
+          command: "extension.runAllTests",
+        },
+      ];
+      const selection = await vscode.window.showQuickPick(options, {
+        placeHolder: "Select a test option",
+        matchOnDescription: true,
+      });
+      const fileName = vscode.window.activeTextEditor?.document.fileName;
+      if (selection) {
+        if (selection.command === "extension.runAllTests") {
+          for (const { name } of modules) {
+            await vscode.commands.executeCommand(
+              `extension.run${name}Tests`,
+              fileName,
+            );
+          }
+        } else {
+          await vscode.commands.executeCommand(selection.command, fileName);
+        }
+      }
+    }),
+  );
+
   for (const { name, mod } of modules) {
     context.subscriptions.push(
       vscode.commands.registerCommand(
@@ -110,7 +128,6 @@ export function activate(context: vscode.ExtensionContext) {
   // aiPanel.show({ why: 'Test failed', suggestion: 'Fix assertion' });
   // heatmap.showCoverage([new vscode.Range(0, 0, 0, 10)]);
 }
-
 // Modular command loader for future extensibility
 function registerAllCommands(context: vscode.ExtensionContext) {
   // Register Soroban test command (add more commands here as needed)

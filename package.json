@@ -39,55 +39,68 @@
       },
       {
         "command": "extension.runUnitTests",
-        "title": "Run Unit Tests"
+        "title": "Unit Tests",
+        "description": "Run all unit tests in the project.\n\nConfiguration: Set your model and API keys in the .env file. For OpenAI, set OPENAI_API_KEY. For Mistral, set MISTRAL_API_KEY. For Pinecone, set PINECONE_API_KEY, PINECONE_ENVIRONMENT, and PINECONE_INDEX."
       },
       {
         "command": "extension.runPropertyTests",
-        "title": "Run Property Tests"
+        "title": "Property Tests",
+        "description": "Run property-based tests to check invariants.\n\nConfiguration: See .env for model and API setup."
       },
       {
         "command": "extension.runEndToEndTests",
-        "title": "Run End-to-End Tests"
+        "title": "End-to-End Tests",
+        "description": "Run end-to-end integration tests.\n\nConfiguration: Ensure all API keys are set in .env."
       },
       {
         "command": "extension.runFuzzTests",
-        "title": "Run Fuzz Tests"
+        "title": "Fuzz Tests",
+        "description": "Run fuzz tests for random input coverage.\n\nConfiguration: Requires model and Pinecone API keys in .env."
       },
       {
         "command": "extension.runSnapshotTests",
-        "title": "Run Snapshot Tests"
+        "title": "Snapshot Tests",
+        "description": "Run snapshot tests to detect UI or output changes.\n\nConfiguration: Set up model and API keys in .env."
       },
       {
         "command": "extension.runAssertionInvariantTests",
-        "title": "Run Assertion & Invariant Tests"
+        "title": "Assertion & Invariant Tests",
+        "description": "Run assertion and invariant checks.\n\nConfiguration: See .env for model/API setup."
       },
       {
         "command": "extension.runRuntimeCheckTests",
-        "title": "Run Runtime Check Tests"
+        "title": "Runtime Check Tests",
+        "description": "Run runtime checks for errors and exceptions.\n\nConfiguration: Ensure .env is configured for models/APIs."
       },
       {
         "command": "extension.runDifferentialTests",
-        "title": "Run Differential Tests"
+        "title": "Differential Tests",
+        "description": "Run differential tests to compare outputs.\n\nConfiguration: Set model and API keys in .env."
       },
       {
         "command": "extension.runFormalVerificationTests",
-        "title": "Run Formal Verification Tests"
+        "title": "Formal Verification Tests",
+        "description": "Run formal verification on code.\n\nConfiguration: Requires model and Pinecone API keys in .env."
       },
       {
         "command": "extension.runTestDataManagementTests",
-        "title": "Run Test Data Management Tests"
+        "title": "Test Data Management Tests",
+        "description": "Run tests for test data management.\n\nConfiguration: Set up all required API keys in .env."
       },
       {
         "command": "extension.runMockIsolationTests",
-        "title": "Run Mock & Isolation Tests"
+        "title": "Mock & Isolation Tests",
+        "description": "Run mock and isolation tests.\n\nConfiguration: See .env for model/API setup."
       },
       {
         "command": "extension.runAllTests",
-        "title": "Run All Tests"
+        "title": "All Tests",
+        "description": "Run all available test modules.\n\nConfiguration: Ensure all model and API keys are set in .env."
       },
       {
         "command": "extension.runTestOptions",
-        "title": "Run Test Options"
+        "title": "Test Options",
+        "description": "Show test options and configuration help.\n\nConfiguration: Edit .env to set model and API keys."
       }
     ]
   },
