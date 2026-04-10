@@ -2,7 +2,8 @@ import { TestingModule } from "../types/testingModule";
 
 export const SnapshotTestModule: TestingModule = {
   name: "SnapshotTest",
-  description: "Run snapshot tests to detect UI or output changes. Configuration: Set up model and API keys in .env.",
+  description:
+    "Snapshot tests capture and compare output or UI state to detect changes over time. Useful for UI and API response regression. Configuration: Set up model and API keys in .env.",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     // TODO: Implement snapshot test generation

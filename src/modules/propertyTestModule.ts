@@ -3,7 +3,8 @@ import { TestGenerator } from "../ai/testGenerator";
 
 export const PropertyTestModule: TestingModule = {
   name: "PropertyTest",
-  description: "Run property-based tests to check invariants. Configuration: See .env for model and API setup.",
+  description:
+    "Property-based tests check that code invariants hold for a wide range of inputs. Useful for finding edge cases and unexpected behaviors. Configuration: See .env for model and API setup.",
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     const generator = new TestGenerator(context.ai);

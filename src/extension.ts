@@ -100,9 +100,14 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.commands.registerCommand(
         `extension.generate${name}Tests`,
-        async (fileName: string) => {
+        async (fileName?: string) => {
+          let resolvedFileName = fileName || vscode.window.activeTextEditor?.document.fileName;
+          if (!resolvedFileName) {
+            vscode.window.showWarningMessage(`No file selected or open. Please open a file to generate ${name} tests.`);
+            return;
+          }
           vscode.window.showInformationMessage(
-            `Generate ${name} Tests command triggered for ${fileName}`,
+            `Generate ${name} Tests command triggered for ${resolvedFileName}`,
           );
           // TODO: Load file, call mod.generateTests, show results
         },
@@ -111,9 +116,14 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.commands.registerCommand(
         `extension.run${name}Tests`,
-        async (fileName: string) => {
+        async (fileName?: string) => {
+          let resolvedFileName = fileName || vscode.window.activeTextEditor?.document.fileName;
+          if (!resolvedFileName) {
+            vscode.window.showWarningMessage(`No file selected or open. Please open a file to run ${name} tests.`);
+            return;
+          }
           vscode.window.showInformationMessage(
-            `Run ${name} Tests command triggered for ${fileName}`,
+            `Run ${name} Tests command triggered for ${resolvedFileName}`,
           );
           // TODO: Load file, call mod.runTests, show results
         },
