@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { TestCommands } from "./commands/testCommands";
+import { PineconeService } from "./services/pineconeService";
+import { EnvironmentManager } from "./config/environment";
 import { getAllFilesAndFolders } from "./utils/fileUtils";
 import { TestCodeLensProvider } from "./editor/codeLensProvider";
 import { AIInsightsPanel } from "./ui/aiInsightsPanel";
@@ -21,6 +23,9 @@ import { MockIsolationModule } from "./modules/mockIsolationModule";
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
+  // Initialize Pinecone indexing on extension load
+  await initializePineconeIndexing();
+
   // Show activation message
   vscode.window.showInformationMessage(
     'Stellar Debugger activated! Use "Stellar: Run Tests with AI Fix" to get started.',
@@ -168,6 +173,42 @@ export async function activate(context: vscode.ExtensionContext) {
   // Modular command loader for future extensibility
   function registerAllCommands(context: vscode.ExtensionContext) {
     // No Soroban test command needed
+  }
+}
+
+// Initialize Pinecone indexing
+async function initializePineconeIndexing(): Promise<void> {
+  try {
+    const envManager = EnvironmentManager.getInstance();
+    const validation = await envManager.validateConfig();
+    
+    if (!validation.valid) {
+      vscode.window.showWarningMessage(
+        `Stellar Debugger: Missing configuration - ${validation.missing.join(', ')}. Configure in settings to enable AI features.`,
+        'Configure'
+      ).then(action => {
+        if (action === 'Configure') {
+          vscode.commands.executeCommand('workbench.action.openSettings', 'stellarDebugger');
+        }
+      });
+      return;
+    }
+
+    const pineconeService = PineconeService.getInstance();
+    const initialized = await pineconeService.initialize();
+    
+    if (initialized) {
+      console.log('Stellar Debugger: Pinecone indexing initialized successfully');
+    } else {
+      vscode.window.showWarningMessage(
+        'Stellar Debugger: Failed to initialize Pinecone. Check your API keys in settings.'
+      );
+    }
+  } catch (error) {
+    console.error('Stellar Debugger: Error initializing Pinecone:', error);
+    vscode.window.showErrorMessage(
+      `Stellar Debugger: Initialization error - ${error}`
+    );
   }
 }
 
