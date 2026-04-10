@@ -101,9 +101,12 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand(
         `extension.generate${name}Tests`,
         async (fileName?: string) => {
-          let resolvedFileName = fileName || vscode.window.activeTextEditor?.document.fileName;
+          let resolvedFileName =
+            fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            vscode.window.showWarningMessage(`No file selected or open. Please open a file to generate ${name} tests.`);
+            vscode.window.showWarningMessage(
+              `No file selected or open. Please open a file to generate ${name} tests.`,
+            );
             return;
           }
           vscode.window.showInformationMessage(
@@ -117,9 +120,12 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand(
         `extension.run${name}Tests`,
         async (fileName?: string) => {
-          let resolvedFileName = fileName || vscode.window.activeTextEditor?.document.fileName;
+          let resolvedFileName =
+            fileName || vscode.window.activeTextEditor?.document.fileName;
           if (!resolvedFileName) {
-            vscode.window.showWarningMessage(`No file selected or open. Please open a file to run ${name} tests.`);
+            vscode.window.showWarningMessage(
+              `No file selected or open. Please open a file to run ${name} tests.`,
+            );
             return;
           }
           vscode.window.showInformationMessage(
