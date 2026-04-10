@@ -5,12 +5,19 @@ import { registerSorobanTestCommand } from "./registerSorobanTestCommand";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
+export function activate(context: vscode.ExtensionContext) {
   // Show activation message
   vscode.window.showInformationMessage(
-    'Congratulations, your extension "stellar-debugger" is now active!'
+    'Congratulations, your extension "stellar-debugger" is now active!',
   );
 
-  // Register modular Soroban test command
+  // Register all modular commands here for scalability
+  registerAllCommands(context);
+}
+
+// Modular command loader for future extensibility
+function registerAllCommands(context: vscode.ExtensionContext) {
+  // Register Soroban test command (add more commands here as needed)
   registerSorobanTestCommand(context);
 }
 
