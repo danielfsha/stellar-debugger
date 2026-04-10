@@ -98,15 +98,10 @@
     "configuration": {
       "title": "Stellar Debugger",
       "properties": {
-        "stellarDebugger.openaiApiKey": {
-          "type": "string",
-          "default": "",
-          "description": "OpenAI API Key for AI-powered error analysis"
-        },
         "stellarDebugger.mistralApiKey": {
           "type": "string",
           "default": "",
-          "description": "Mistral API Key (alternative to OpenAI)"
+          "description": "Mistral API Key for AI-powered error analysis"
         },
         "stellarDebugger.pineconeApiKey": {
           "type": "string",
@@ -123,11 +118,11 @@
           "default": "stellar-tests",
           "description": "Pinecone Index name"
         },
-        "stellarDebugger.vercelAiModel": {
+        "stellarDebugger.mistralModel": {
           "type": "string",
-          "default": "gpt-4",
-          "enum": ["gpt-4", "gpt-3.5-turbo", "mistral-large-latest"],
-          "description": "AI model to use for analysis"
+          "default": "mistral-large-latest",
+          "enum": ["mistral-large-latest", "mistral-medium-latest", "mistral-small-latest"],
+          "description": "Mistral AI model to use for analysis"
         }
       }
     },

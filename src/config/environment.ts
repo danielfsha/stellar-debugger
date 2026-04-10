@@ -1,12 +1,10 @@
 import * as vscode from 'vscode';
 
 export interface EnvironmentConfig {
-  openaiApiKey?: string;
   mistralApiKey?: string;
   pineconeApiKey?: string;
   pineconeEnvironment?: string;
   pineconeIndex?: string;
-  vercelAiModel?: string;
 }
 
 export class EnvironmentManager {
@@ -28,12 +26,10 @@ export class EnvironmentManager {
     const vsConfig = vscode.workspace.getConfiguration('stellarDebugger');
     
     this.config = {
-      openaiApiKey: vsConfig.get('openaiApiKey') || process.env.OPENAI_API_KEY,
       mistralApiKey: vsConfig.get('mistralApiKey') || process.env.MISTRAL_API_KEY,
       pineconeApiKey: vsConfig.get('pineconeApiKey') || process.env.PINECONE_API_KEY,
       pineconeEnvironment: vsConfig.get('pineconeEnvironment') || process.env.PINECONE_ENVIRONMENT,
-      pineconeIndex: vsConfig.get('pineconeIndex') || process.env.PINECONE_INDEX,
-      vercelAiModel: vsConfig.get('vercelAiModel') || 'gpt-4'
+      pineconeIndex: vsConfig.get('pineconeIndex') || process.env.PINECONE_INDEX
     };
   }
 
@@ -44,8 +40,8 @@ export class EnvironmentManager {
   async validateConfig(): Promise<{ valid: boolean; missing: string[] }> {
     const missing: string[] = [];
     
-    if (!this.config.openaiApiKey && !this.config.mistralApiKey) {
-      missing.push('AI API Key (OpenAI or Mistral)');
+    if (!this.config.mistralApiKey) {
+      missing.push('Mistral API Key');
     }
     
     if (!this.config.pineconeApiKey) {
