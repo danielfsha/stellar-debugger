@@ -3,6 +3,7 @@
 import * as vscode from "vscode";
 import { TestCommands } from "./commands/testCommands";
 import { PineconeService } from "./services/pineconeService";
+import { RepositoryIndexer } from "./services/repositoryIndexer";
 import { EnvironmentManager } from "./config/environment";
 import { getAllFilesAndFolders } from "./utils/fileUtils";
 import { TestCodeLensProvider } from "./editor/codeLensProvider";
@@ -199,6 +200,20 @@ async function initializePineconeIndexing(): Promise<void> {
     
     if (initialized) {
       console.log('Stellar Debugger: Pinecone indexing initialized successfully');
+      
+      // Start repository indexing in background
+      const repositoryIndexer = RepositoryIndexer.getInstance();
+      
+      // Ask user if they want to index the repository
+      const action = await vscode.window.showInformationMessage(
+        'Stellar Debugger: Index repository for AI-powered features?',
+        'Index Now',
+        'Later'
+      );
+      
+      if (action === 'Index Now') {
+        repositoryIndexer.indexRepository();
+      }
     } else {
       vscode.window.showWarningMessage(
         'Stellar Debugger: Failed to initialize Pinecone. Check your API keys in settings.'

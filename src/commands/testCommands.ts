@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { TestRunner } from '../services/testRunner';
 import { EnvironmentManager } from '../config/environment';
 import { PineconeService } from '../services/pineconeService';
+import { RepositoryIndexer } from '../services/repositoryIndexer';
 
 export class TestCommands {
   private testRunner: TestRunner;
@@ -47,6 +48,13 @@ export class TestCommands {
       vscode.commands.registerCommand(
         'stellar-debugger.viewTestHistory',
         () => this.viewTestHistory()
+      )
+    );
+
+    context.subscriptions.push(
+      vscode.commands.registerCommand(
+        'stellar-debugger.indexRepository',
+        () => this.indexRepository()
       )
     );
   }
@@ -148,5 +156,18 @@ export class TestCommands {
     } catch (error) {
       vscode.window.showErrorMessage(`Failed to load history: ${error}`);
     }
+  }
+
+  private async indexRepository(): Promise<void> {
+    const validation = await this.envManager.validateConfig();
+    if (!validation.valid) {
+      const configured = await this.envManager.promptForMissingConfig();
+      if (!configured) {
+        return;
+      }
+    }
+
+    const repositoryIndexer = RepositoryIndexer.getInstance();
+    await repositoryIndexer.indexRepository();
   }
 }

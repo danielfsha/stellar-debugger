@@ -30,6 +30,10 @@
         "title": "Stellar: View Test History"
       },
       {
+        "command": "stellar-debugger.indexRepository",
+        "title": "Stellar: Index Repository"
+      },
+      {
         "command": "extension.runUnitTests",
         "title": "Unit Tests",
         "description": "Run all unit tests in the project.\n\nConfiguration: Set your model and API keys in the .env file. For OpenAI, set OPENAI_API_KEY. For Mistral, set MISTRAL_API_KEY. For Pinecone, set PINECONE_API_KEY, PINECONE_ENVIRONMENT, and PINECONE_INDEX."
