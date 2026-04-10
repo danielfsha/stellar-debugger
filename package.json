@@ -45,6 +45,8 @@
     "typescript-eslint": "^8.56.1"
   },
   "dependencies": {
+    "@ai-sdk/mistral": "^3.0.30",
+    "ai": "^6.0.156",
     "openai": "^6.34.0",
     "vectra": "^0.14.0"
   }

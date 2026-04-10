@@ -1,18 +1,20 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { mistral } from "@ai-sdk/mistral";
+import { embed } from "ai";
 
 export class EmbeddingService {
-  private openai: OpenAIApi;
+  private apiKey: string;
 
   constructor(apiKey: string) {
-    const config = new Configuration({ apiKey });
-    this.openai = new OpenAIApi(config);
+    this.apiKey = apiKey;
   }
 
   async embed(text: string): Promise<number[]> {
-    const resp = await this.openai.createEmbedding({
-      model: 'text-embedding-ada-002',
-      input: text,
+    const { embedding } = await embed({
+      model: mistral.embedding("mistral-embed", {
+        apiKey: this.apiKey,
+      }),
+      value: text,
     });
-    return resp.data.data[0].embedding;
+    return embedding;
   }
 }

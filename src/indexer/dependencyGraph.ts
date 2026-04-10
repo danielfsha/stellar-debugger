@@ -1,4 +1,4 @@
-import { SymbolInfo } from '../types';
+import { SymbolInfo } from "../types";
 
 export class DependencyGraph {
   private graph: Map<string, Set<string>> = new Map();

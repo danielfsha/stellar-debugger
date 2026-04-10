@@ -1,5 +1,5 @@
-import ts from 'typescript';
-import { SymbolInfo } from '../types';
+import ts from "typescript";
+import { SymbolInfo } from "../types";
 
 export class ASTParser {
   public parseFile(filePath: string, fileContent: string): SymbolInfo[] {
@@ -7,7 +7,7 @@ export class ASTParser {
       filePath,
       fileContent,
       ts.ScriptTarget.Latest,
-      true
+      true,
     );
     const symbols: SymbolInfo[] = [];
 
@@ -15,11 +15,15 @@ export class ASTParser {
       if (ts.isFunctionDeclaration(node) && node.name) {
         symbols.push({
           name: node.name.text,
-          kind: 'function',
+          kind: "function",
           file: filePath,
           location: {
-            line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-            character: sourceFile.getLineAndCharacterOfPosition(node.getStart()).character + 1,
+            line:
+              sourceFile.getLineAndCharacterOfPosition(node.getStart()).line +
+              1,
+            character:
+              sourceFile.getLineAndCharacterOfPosition(node.getStart())
+                .character + 1,
           },
           signature: node.getText(),
         });
@@ -27,11 +31,15 @@ export class ASTParser {
       if (ts.isClassDeclaration(node) && node.name) {
         symbols.push({
           name: node.name.text,
-          kind: 'class',
+          kind: "class",
           file: filePath,
           location: {
-            line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-            character: sourceFile.getLineAndCharacterOfPosition(node.getStart()).character + 1,
+            line:
+              sourceFile.getLineAndCharacterOfPosition(node.getStart()).line +
+              1,
+            character:
+              sourceFile.getLineAndCharacterOfPosition(node.getStart())
+                .character + 1,
           },
           signature: node.getText(),
         });

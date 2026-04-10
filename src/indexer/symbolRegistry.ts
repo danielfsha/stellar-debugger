@@ -1,4 +1,4 @@
-import { SymbolInfo } from '../types';
+import { SymbolInfo } from "../types";
 
 export class SymbolRegistry {
   private symbols: SymbolInfo[] = [];
@@ -8,7 +8,7 @@ export class SymbolRegistry {
   }
 
   findByName(name: string): SymbolInfo | undefined {
-    return this.symbols.find(s => s.name === name);
+    return this.symbols.find((s) => s.name === name);
   }
 
   getAll(): SymbolInfo[] {
