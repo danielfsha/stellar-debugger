@@ -15,11 +15,19 @@
     "commands": [
       {
         "command": "stellar-debugger.runSorobanTests",
-        "title": "Run Soroban Tests"
+        "title": "Stellar: Run Soroban Tests"
       },
       {
-        "command": "stellar-debugger.runSorobanTestsCmd",
-        "title": "Run Soroban Tests (Command Line)"
+        "command": "stellar-debugger.runSorobanTestsWithAI",
+        "title": "Stellar: Run Tests with AI Fix"
+      },
+      {
+        "command": "stellar-debugger.configureExtension",
+        "title": "Stellar: Configure Extension"
+      },
+      {
+        "command": "stellar-debugger.viewTestHistory",
+        "title": "Stellar: View Test History"
       },
       {
         "command": "extension.runUnitTests",
@@ -86,7 +94,55 @@
         "title": "Test Options",
         "description": "Show test options and configuration help.\n\nConfiguration: Edit .env to set model and API keys."
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Stellar Debugger",
+      "properties": {
+        "stellarDebugger.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API Key for AI-powered error analysis"
+        },
+        "stellarDebugger.mistralApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Mistral API Key (alternative to OpenAI)"
+        },
+        "stellarDebugger.pineconeApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Pinecone API Key for test result indexing"
+        },
+        "stellarDebugger.pineconeEnvironment": {
+          "type": "string",
+          "default": "",
+          "description": "Pinecone Environment (e.g., us-east-1-aws)"
+        },
+        "stellarDebugger.pineconeIndex": {
+          "type": "string",
+          "default": "stellar-tests",
+          "description": "Pinecone Index name"
+        },
+        "stellarDebugger.vercelAiModel": {
+          "type": "string",
+          "default": "gpt-4",
+          "enum": ["gpt-4", "gpt-3.5-turbo", "mistral-large-latest"],
+          "description": "AI model to use for analysis"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "stellar-debugger.runSorobanTests",
+          "when": "editorLangId == rust"
+        },
+        {
+          "command": "stellar-debugger.runSorobanTestsWithAI",
+          "when": "editorLangId == rust"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
