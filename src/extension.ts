@@ -1,23 +1,31 @@
-  // Register a top-level command for test options (unit, all, etc.)
-  context.subscriptions.push(
-    vscode.commands.registerCommand('extension.runTestOptions', async () => {
-      const options = [
-        { label: 'Run Unit Tests', command: 'extension.runUnitTests' },
-        { label: 'Run All Tests', command: 'extension.runAllTests' },
-      ];
-      const selection = await vscode.window.showQuickPick(options, { placeHolder: 'Select a test option' });
-      if (selection) {
-        if (selection.command === 'extension.runAllTests') {
-          // Run all test modules
-          for (const { name } of modules) {
-            await vscode.commands.executeCommand(`extension.run${name}Tests`, vscode.window.activeTextEditor?.document.fileName);
-          }
-        } else {
-          await vscode.commands.executeCommand(selection.command, vscode.window.activeTextEditor?.document.fileName);
+// Register a top-level command for test options (unit, all, etc.)
+context.subscriptions.push(
+  vscode.commands.registerCommand("extension.runTestOptions", async () => {
+    const options = [
+      { label: "Run Unit Tests", command: "extension.runUnitTests" },
+      { label: "Run All Tests", command: "extension.runAllTests" },
+    ];
+    const selection = await vscode.window.showQuickPick(options, {
+      placeHolder: "Select a test option",
+    });
+    if (selection) {
+      if (selection.command === "extension.runAllTests") {
+        // Run all test modules
+        for (const { name } of modules) {
+          await vscode.commands.executeCommand(
+            `extension.run${name}Tests`,
+            vscode.window.activeTextEditor?.document.fileName,
+          );
         }
+      } else {
+        await vscode.commands.executeCommand(
+          selection.command,
+          vscode.window.activeTextEditor?.document.fileName,
+        );
       }
-    })
-  );
+    }
+  }),
+);
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";

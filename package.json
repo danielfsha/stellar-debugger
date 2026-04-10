@@ -11,7 +11,20 @@
   ],
   "activationEvents": [
     "onCommand:stellar-debugger.runSorobanTests",
-    "onCommand:stellar-debugger.runSorobanTestsCmd"
+    "onCommand:stellar-debugger.runSorobanTestsCmd",
+    "onCommand:extension.runUnitTests",
+    "onCommand:extension.runPropertyTests",
+    "onCommand:extension.runEndToEndTests",
+    "onCommand:extension.runFuzzTests",
+    "onCommand:extension.runSnapshotTests",
+    "onCommand:extension.runAssertionInvariantTests",
+    "onCommand:extension.runRuntimeCheckTests",
+    "onCommand:extension.runDifferentialTests",
+    "onCommand:extension.runFormalVerificationTests",
+    "onCommand:extension.runTestDataManagementTests",
+    "onCommand:extension.runMockIsolationTests",
+    "onCommand:extension.runAllTests",
+    "onCommand:extension.runTestOptions"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -23,6 +36,58 @@
       {
         "command": "stellar-debugger.runSorobanTestsCmd",
         "title": "Run Soroban Tests (Command Line)"
+      },
+      {
+        "command": "extension.runUnitTests",
+        "title": "Run Unit Tests"
+      },
+      {
+        "command": "extension.runPropertyTests",
+        "title": "Run Property Tests"
+      },
+      {
+        "command": "extension.runEndToEndTests",
+        "title": "Run End-to-End Tests"
+      },
+      {
+        "command": "extension.runFuzzTests",
+        "title": "Run Fuzz Tests"
+      },
+      {
+        "command": "extension.runSnapshotTests",
+        "title": "Run Snapshot Tests"
+      },
+      {
+        "command": "extension.runAssertionInvariantTests",
+        "title": "Run Assertion & Invariant Tests"
+      },
+      {
+        "command": "extension.runRuntimeCheckTests",
+        "title": "Run Runtime Check Tests"
+      },
+      {
+        "command": "extension.runDifferentialTests",
+        "title": "Run Differential Tests"
+      },
+      {
+        "command": "extension.runFormalVerificationTests",
+        "title": "Run Formal Verification Tests"
+      },
+      {
+        "command": "extension.runTestDataManagementTests",
+        "title": "Run Test Data Management Tests"
+      },
+      {
+        "command": "extension.runMockIsolationTests",
+        "title": "Run Mock & Isolation Tests"
+      },
+      {
+        "command": "extension.runAllTests",
+        "title": "Run All Tests"
+      },
+      {
+        "command": "extension.runTestOptions",
+        "title": "Run Test Options"
       }
     ]
   },
