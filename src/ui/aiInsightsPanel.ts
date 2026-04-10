@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export class AIInsightsPanel {
   private panel: vscode.WebviewPanel | undefined;
@@ -6,10 +6,10 @@ export class AIInsightsPanel {
   show(insights: any) {
     if (!this.panel) {
       this.panel = vscode.window.createWebviewPanel(
-        'aiInsights',
-        'AI Insights',
+        "aiInsights",
+        "AI Insights",
         vscode.ViewColumn.Beside,
-        {}
+        {},
       );
     }
     this.panel.webview.html = `<html><body><pre>${JSON.stringify(insights, null, 2)}</pre></body></html>`;

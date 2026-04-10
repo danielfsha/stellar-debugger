@@ -1,22 +1,26 @@
-import { TestingModule } from "../types";
+import { TestingModule } from "../types/testingModule";
 import { TestGenerator } from "../ai/testGenerator";
 
 export const PropertyTestModule: TestingModule = {
   name: "PropertyTest",
-  activate(context) {},
-  async generateTests(file, context) {
+  activate(context: any) {},
+  async generateTests(file: any, context: any) {
     const generator = new TestGenerator(context.ai);
-    return generator.generateTests({
+    const result = await generator.generateTests({
       code: file.content,
       strategy: "property",
     });
-  },
-  async runTests(target) {
-    // Implement property-based test runner integration
+    // Ensure result is always an array
+    if (Array.isArray(result)) return result;
+    if (typeof result === "string") return [result];
     return [];
   },
-  analyze(results, context) {
-    // Analyze property test results
+  async runTests(target: any) {
+    // TODO: Integrate with property-based test runner
+    return [];
+  },
+  analyze(results: any, context: any) {
+    // TODO: Analyze property test results
     return {};
   },
 };
