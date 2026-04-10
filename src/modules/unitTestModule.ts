@@ -8,7 +8,10 @@ export const UnitTestModule: TestingModule = {
   activate(context: any) {},
   async generateTests(file: any, context: any) {
     const generator = new TestGenerator(context.ai);
-    return generator.generateTests({ code: file.content });
+    const result = await generator.generateTests({ code: file.content });
+    if (Array.isArray(result)) return result;
+    if (typeof result === "string") return [result];
+    return [];
   },
   async runTests(target: any) {
     // Implement test runner integration (e.g., Jest, Mocha)
@@ -16,11 +19,22 @@ export const UnitTestModule: TestingModule = {
   },
   analyze(results: any, context: any) {
     // Analyze test results and return insights
-    return {};
+    if (!Array.isArray(results)) return { error: "No results" };
+    const summary = {
+      total: results.length,
+      passed: results.filter((r: any) => r.status === "passed").length,
+      failed: results.filter((r: any) => r.status === "failed").length,
+      flaky: results.filter((r: any) => r.flaky).length,
+      failures: results.filter((r: any) => r.status === "failed"),
+    };
+    return summary;
   },
   async improveTests(file: any, context: any) {
     const improver = new TestImprover(context.ai);
-    return improver.improveTests({ tests: file.tests });
+    const result = await improver.improveTests({ tests: file.tests });
+    if (Array.isArray(result)) return result;
+    if (typeof result === "string") return [result];
+    return [];
   },
   async fixFailures(failure: any, context: any) {
     const fixer = new FixEngine(context.ai);
